@@ -16,6 +16,19 @@ sunglasses = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\sunglass
 #final images destination
 finalImages = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Blessings"
 
+#dictionaries
+background_names = {}
+tail_names = {}
+body_names = {}
+eye_names = {}
+accessory_names = {}
+hair_names = {}
+horn_names = {}
+sunglass_names = {}
+
+
+
+
 #defining an empty images array which we'll use to come up with each final image
 images = []
 for i in range(len(os.listdir(r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run"))-2):
@@ -174,20 +187,45 @@ def whichAccessory():
 
 
 
+Metadata = {}
 
 while(bCounter < 501):
-    images[0] = Image.open(backgrounds + "/" + whichBackground()).convert("RGBA")
+    blessing = {}
+
+    whichBackground = whichBackground()
+    images[0] = Image.open(backgrounds + "/" + wBackground).convert("RGBA")
+    blessing["Background"] = background_names[wBackground]
+
     wTail = whichTail()
     images[1] = Image.open(tail + "/" + wTail).convert("RGBA")
-    images[2] = Image.open(bodies + "/" + whichBody()).convert("RGBA")
-    images[3] = Image.open(eyes + "/" + whichEye()).convert("RGBA")
+    blessing["Tail"] = tail_names[wTail]
+    
+    wBody = whichBody()
+    images[2] = Image.open(bodies + "/" + wBody).convert("RGBA")
+    blessing["Body"] = body_names[wBody]
+    
+    wEye = whichEye()
+    images[3] = Image.open(eyes + "/" + wEye).convert("RGBA")
+    blessing["Eye"] = eye_names[wEye]
+
     
     #determining which hair to use
     wHair = "PEASANT HAIR " + wTail[-5] + ".png"
     images[4] = Image.open(hair + "/" + wHair).convert("RGBA") #hair
-    images[5] = Image.open(horn + "/" + whichHorn()).convert("RGBA")
-    images[6] = Image.open(sunglasses + "/" + whichSunglasses()).convert("RGBA")
-    images[7] = Image.open(accessories + "/" + whichAccessory()).convert("RGBA")
+    blessing["Hair"] = hair_names[wHair]
+
+    wHorn = whichHorn()
+    images[5] = Image.open(horn + "/" + wHorn).convert("RGBA")
+    blessing["Horn"] = horn_names[wHorn]
+    
+    wSunglass = whichSunglasses()
+    images[6] = Image.open(sunglasses + "/" + wSunglass).convert("RGBA")
+    blessing["Sunglasses"] = sunglass_names[wSunglass]
+
+    wAccessory = whichAccessory()
+    images[7] = Image.open(accessories + "/" + wAccessory).convert("RGBA")
+    blessing["Accessory"] = accessory_names[wAccessory]
+
     final_image = images[0]
 
     #combining all layers
@@ -196,6 +234,18 @@ while(bCounter < 501):
     #saving the image with the correct name and directory
     print(str(bCounter) + " images generated")
     final_image.save(finalImages+"/Blessings Peasant " +str(bCounter)+".png")
+    
+    if(bCounter < 10):
+        id = "Peasant " + "000" + str(bCounter)
+    elif(bCounter < 100):
+        id = "Peasant " + "00" + str(bCounter)
+    elif(bCounter < 1000):
+        id = "Peasant "+ "0" + str(bCounter)
+    else:
+        id = str(bCounter)
+    Metadata[id] = blessing
+
+
     bCounter += 1
 
     
