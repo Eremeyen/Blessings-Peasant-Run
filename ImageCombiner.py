@@ -2,29 +2,105 @@ from PIL import Image
 import os
 from os import listdir
 from random import random
+import csv
 
 #attribute folders:
-backgrounds = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Backgrounds"
-tail = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Tail"
-bodies = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Bodies"
-eyes = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Eye"
-accessories = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\accessories"
-hair = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Hair"
-horn = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Horn"
-sunglasses = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\sunglasses"
+backgrounds = r"Backgrounds"
+tail = r"Tail"
+bodies = r"Bodies"
+eyes = r"Eye"
+accessories = r"accessories"
+hair = r"Hair"
+horn = r"Horn"
+sunglasses = r"sunglasses"
 
 #final images destination
-finalImages = r"C:\Users\meren\OneDrive\Masaüstü\Blessings Peasant Run\Blessings"
+finalImages = r"Blessings"
 
 #dictionaries
-background_names = {}
-tail_names = {}
-body_names = {}
-eye_names = {}
-accessory_names = {}
-hair_names = {}
-horn_names = {}
-sunglass_names = {}
+background_names = {
+    "PEASANT COLOUR BACKGROUND 1.png":"Maximum Blue Purple",
+    "PEASANT COLOUR BACKGROUND 2.png":"Picton Blue",
+    "PEASANT COLOUR BACKGROUND 3.png":"Warm Orange",
+    "PEASANT COLOUR BACKGROUND 4.png":"Lilac",
+    "PEASANT COLOUR BACKGROUND 5.png":"Hot Pink",
+    "PEASANT COLOUR BACKGROUND 6.png":"Vibrant Green",
+    "PEASANT COLOUR BACKGROUND 8.png":"Orange",
+    "PEASANT GRADIENT BACKGROUND 1.png":"Light Pink Gradient",
+    "PEASANT GRADIENT BACKGROUND 2.png":"Purple Pink Gradient",
+    "PEASANT GRADIENT BACKGROUND 3.png":"Lilac Gradient",
+    "PEASANT GRADIENT BACKGROUND 4.png":"Blue Pink Gradient",
+    "PEASANT GRADIENT BACKGROUND 5.png":"Green Gradient",
+    "PEASANT GRADIENT BACKGROUND 6.png":"Red Blue Gradient",
+    "PEASANT GRADIENT BACKGROUND 9.png":"Hot Pink Gradient",
+    "PEASANT GRADIENT BACKGROUND 10.png":"Orange Gradient"
+}
+tail_names = {
+    "PEASANT TAIL 1.png":"White tail",
+    "PEASANT TAIL 2.png":"Blue tail",
+    "PEASANT TAIL 5.png":"Pink tail",
+    "PEASANT TAIL 6.png":"Brown tail",
+    "PEASANT TAIL 3.png":"Purple curly tail",
+    "PEASANT TAIL 4.png":"Blue curly tail"
+}
+body_names = {
+    "PEASANT BODY 1.png":"Grace",
+    "PEASANT BODY 3.png":"Fluffy Grace",
+    "PEASANT BODY 8.png":"Mocha",
+    "PEASANT BODY 6.png":"Stripes",
+    "PEASANT BODY 4.png":"Purple Mint"
+}
+eye_names = {
+    "PEASANT EYE 1.png":"Female blue eyes",
+    "PEASANT EYE 2.png":"Female green eyes",
+    "PEASANT EYE 3.png":"Female purple eyes",
+    "PEASANT EYE 4.png":"Female aquamarine eyes",
+    "PEASANT EYE M1.png":"Male blue eyes",
+    "PEASANT EYE M2.png":"Male green eyes",
+    "PEASANT EYE M3.png":"Male purple eyes",
+    "PEASANT EYE M4.png":"Male aquamarine eyes"
+}
+accessory_names = {
+    "220329-0959-BOS LAYER.png":"none",
+    "PEASANT ACC 1.png":"Green pendant",
+    "PEASANT ACC 6.png":"Red pendant",
+    "PEASANT ACC 7.png":"Purple pendant",
+    "PEASANT ACC 2.png":"Green tassel",
+    "PEASANT ACC 4.png":"Orange tassel",
+    "PEASANT ACC 8.png":"Blue tassel",
+    "PEASANT ACC 9.png":"Purple bow",
+    "PEASANT ACC 3.png":"Orange throw",
+    "PEASANT ACC 5.png":"Black throw"
+}
+hair_names = {
+    "PEASANT HAIR 1.png":"White hair",
+    "PEASANT HAIR 2.png":"Blue hair",
+    "PEASANT HAIR 5.png":"Pink hair",
+    "PEASANT HAIR 6.png":"Brown hair",
+    "PEASANT HAIR 3.png":"Purple curly hair",
+    "PEASANT HAIR 4.png":"Blue curly hair"
+}
+horn_names = {
+    "PEASANT HORN 2.png":"Pink spiral horn",
+    "PEASANT HORN 3.png":"Purple spiral horn",
+    "PEASANT HORN 4.png":"Gold spiral horn",
+    "PEASANT HORN 1.png":"Blue sparkle horn",
+    "PEASANT HORN 5.png":"Purple sparkle horn",
+    "PEASANT HORN 6.png":"Gold sparkle horn"
+}
+sunglass_names = {
+    "220329-0959-BOS LAYER.png":"None",
+    "PEASANT SUNGLASSES 1.png":"Goggles",
+    "PEASANT SUNGLASSES 2.png":"Black green gradient sunnies",
+    "PEASANT SUNGLASSES 4.png":"Orange razor sunnies",
+    "PEASANT SUNGLASSES 8.png":"Red razor sunnies",
+    "PEASANT SUNGLASSES 9.png":"Pink razor sunnies",
+    "PEASANT SUNGLASSES 10.png":"Purple razor sunnies",
+    "PEASANT SUNGLASSES 3.png":"Purple large sunnies",
+    "PEASANT SUNGLASSES 5.png":"Dawn large sunnies",
+    "PEASANT SUNGLASSES 6.png":"Pink large sunnies",
+    "PEASANT SUNGLASSES 7.png":"French tan"
+}
 
 
 
@@ -187,10 +263,21 @@ def whichAccessory():
 
 
 
-Metadata = {}
+Metadata = []
 
 while(bCounter < 501):
     blessing = {}
+
+    if(bCounter < 10):
+        id = "000" + str(bCounter)
+    elif(bCounter < 100):
+        id = "00" + str(bCounter)
+    elif(bCounter < 1000):
+        id = "0" + str(bCounter)
+    else:
+        id = str(bCounter)
+    blessing["id"] = int(id)
+
 
     whichBackground = whichBackground()
     images[0] = Image.open(backgrounds + "/" + wBackground).convert("RGBA")
@@ -243,11 +330,17 @@ while(bCounter < 501):
         id = "Peasant "+ "0" + str(bCounter)
     else:
         id = str(bCounter)
-    Metadata[id] = blessing
+    Metadata.append(blessing)
 
 
     bCounter += 1
 
+main_info = ["id","Background","Tail","Body","Eye","Hair","Horn","Sunglasses","Accessory"]
+
+with open("metadata.csv", "w") as csvfile:
+    writer = csv.DictWriter(csvfile,fieldnames= main_info)
+    writer.writeHeader()
+    writer.writerows(Metadata)
     
 
 
